@@ -1,4 +1,5 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Custom built timer in 'src/public/timer.js'
 
 ## Available Scripts
 
