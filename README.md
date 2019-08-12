@@ -1,5 +1,5 @@
 Custom built timer in 'src/timer.js' <br>
-Parent timer in 'src/App.js' <br>
+Parent component in 'src/App.js' <br>
 Time prop in parent component is for 'seconds' unit. <br>
 Callback function built into App.js for handling when timer runs down to zero. <br>
 
