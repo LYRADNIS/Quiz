@@ -11,7 +11,7 @@ class App extends React.Component {
   render(){
       return (
         <div className="App">
-            <Timer time={60} callbackFunc={this.handleCB}/>
+            <Timer time={600} callbackFunc={this.handleCB}/>
         </div>
     )
   }

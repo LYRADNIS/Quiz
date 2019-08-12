@@ -6,9 +6,8 @@ export default class Timer extends React.Component {
     super(props)
     this.state = {
       timerLeft:this.props.time,
-      seconds:'loading',
-      minutes:'props',
-      hours:'now'
+      seconds:'props',
+      minutes:'loading',
     }
   }
 
