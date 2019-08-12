@@ -1,6 +1,6 @@
-Custom built timer in 'src/public/timer.js'
-Time prop in parent component is for 'seconds' unit.
-Callback function built into App.js for handling when timer runs down to zero.
+Custom built timer in 'src/public/timer.js' <br>
+Time prop in parent component is for 'seconds' unit. <br>
+Callback function built into App.js for handling when timer runs down to zero. <br>
 
 ## Available Scripts
 
