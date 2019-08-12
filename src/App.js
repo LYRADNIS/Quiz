@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import  Timer  from './timer.js'
 
@@ -12,7 +11,7 @@ class App extends React.Component {
   render(){
       return (
         <div className="App">
-            <Timer time={1000} callbackFunc={this.handleCB}/>
+            <Timer time={60} callbackFunc={this.handleCB}/>
         </div>
     )
   }
