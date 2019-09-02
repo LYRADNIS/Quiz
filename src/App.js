@@ -11,6 +11,7 @@ class App extends React.Component {
       data:[],
       search: null,
       amountLoaded:3,
+      loading:false
     }
     this.memo = {};
     this.loadButtonRef = React.createRef()
@@ -42,6 +43,9 @@ class App extends React.Component {
   }
 
   handleSearchPress = () => {
+    this.setState({
+      loading:true
+    })
     const url = this.state.search === null ? `http://api.giphy.com/v1/gifs/trending?api_key=8JI4AsP4zmNZoxx4yGTxqp6Uds5orCYm&limit=${this.state.amountLoaded}&rating=G` : `https://api.giphy.com/v1/gifs/search?api_key=8JI4AsP4zmNZoxx4yGTxqp6Uds5orCYm&q=${this.state.search}&limit=${this.state.amountLoaded}&offset=0&rating=G&lang=en`
     fetch(url)
       .then((response)=>{
@@ -51,7 +55,8 @@ class App extends React.Component {
         response.json().then((data)=>{
           console.log(data.data)
           this.setState({
-            data:data.data
+            data:data.data,
+            loading:false
           }, this.scrollToMyRef)
         })
 
@@ -123,6 +128,8 @@ class App extends React.Component {
                 PRESS ME
               </button>
 
+
+
               <div className='gif-container'>
                     <MediaQuery maxWidth={500}>
                       {matches => {
@@ -133,9 +140,23 @@ class App extends React.Component {
                    </MediaQuery>
               </div>
 
+              {
+                this.state.loading &&
+                <div className="spinner">
+                  <div className="rect1"></div>
+                  <div className="rect2"></div>
+                  <div className="rect3"></div>
+                  <div className="rect4"></div>
+                  <div className="rect5"></div>
+                </div>
+
+              }
+
               <button onClick={this.handleLoadMore} className={'loading-button'} ref={this.loadButtonRef} >
                 Load More
               </button>
+
+
           </div>
         </div>
     )
