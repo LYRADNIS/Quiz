@@ -1,8 +1,27 @@
 import React from 'react';
 import './App.css';
-import  Timer  from './timer.js'
+
 
 class App extends React.Component {
+
+  constructor(props){
+    super(props)
+    this.state = {
+      currentSearch:'trending'
+    }
+  }
+
+  componentWillMount(){
+    //prac api key
+      // 8JI4AsP4zmNZoxx4yGTxqp6Uds5orCYm
+    //trending api: first use initial trneidng to load
+
+
+  }
+
+  handleSearchBar = () => {
+
+  }
 
   handleCB = (arg) => {
     alert(arg)
@@ -11,7 +30,16 @@ class App extends React.Component {
   render(){
       return (
         <div className="App">
-            <Timer time={600} callbackFunc={this.handleCB}/>
+          <h1 className="Title">
+            GIPHY SEARCHER
+          </h1>
+          <div>
+            Search Bar
+          </div>
+          <div>
+            Giphys
+          </div>
+
         </div>
     )
   }
