@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import MediaQuery from 'react-responsive'
 
 
 class App extends React.Component {
@@ -51,15 +52,15 @@ class App extends React.Component {
           console.log(data.data)
           this.setState({
             data:data.data
-          })
-        },this.scrollToMyRef())
+          }, this.scrollToMyRef)
+        })
 
       }).catch((error)=>{
         console.log('Error', error)
       })
   }
   scrollToMyRef = () => {
-    window.scrollTo(0, this.loadButtonRef.current.offsetTop)
+    setTimeout(1000, window.scrollTo({top: this.loadButtonRef.current.offsetTop,behavior:'smooth'}))
   }
 
   handleLoadMore = () => {
@@ -76,42 +77,66 @@ class App extends React.Component {
 
   render(){
     // increased look up for already seen gifs using memoization
-      let gifs = this.state.data.map((value, index)=>{
+    // check here if current design is mobile
+      let compSizedGifs = this.state.data.map((value, index)=>{
                 let id = value.id
                 if(!this.memo.id){
                   this.handleCaching(value,id, this.memo)
                 return (
                   <div>
-                      <img src={ value.images.original.url} key={index} className='gif'/>
+                      <img src={ value.images.original.url} key={index} className='gif' alt={id}/>
                   </div>
                   )
                 }
               return (
                   <div>
-                      <img src={ this.memo[id] } key={index} className='gif'/>
+                      <img src={ this.memo[id] } key={index} className='gif' alt={id}/>
                   </div>
                 )
               })
 
+       let mobileSizedGifs = this.state.data.map((value, index)=>{
+                let id = value.id
+                if(!this.memo.id){
+                  this.handleCaching(value,id, this.memo)
+                return (
+                  <div>
+                      <img src={ value.images.original.url} key={index} className='gifMobile' alt={id}/>
+                  </div>
+                  )
+                }
+              return (
+                  <div>
+                      <img src={ this.memo[id] } key={index} className='gifMobile' alt={id}/>
+                  </div>
+                )
+        })
+
       return (
-        <div className="App">
-          <h1 className="Title">
-            GIPHY SEARCHER
-          </h1>
-            <input placeholder="Enter terms" onKeyPress={this.handleSearchBar} className={'Input'}/>
-            <button onClick={this.handleSearchPress} className={'Search'}>
-              PRESS ME
-            </button>
+        <div className='background'>
+          <div className="App">
+            <h1 className="Title">
+              GIPHY SEARCHER
+            </h1>
+              <input placeholder="Enter terms" onKeyPress={this.handleSearchBar} className={'Input'}/>
+              <button onClick={this.handleSearchPress} className={'Search'}>
+                PRESS ME
+              </button>
 
-          <div className='gif-container'>
-            {
-              gifs
-            }
+              <div className='gif-container'>
+                    <MediaQuery maxWidth={500}>
+                      {matches => {
+                        return matches
+                            ? mobileSizedGifs
+                            : compSizedGifs
+                        }}
+                   </MediaQuery>
+              </div>
+
+              <button onClick={this.handleLoadMore} className={'loading-button'} ref={this.loadButtonRef} >
+                Load More
+              </button>
           </div>
-
-            <button onClick={this.handleLoadMore} className={'loading-button'} ref={this.loadButtonRef} >
-              Load More
-            </button>
         </div>
     )
   }
