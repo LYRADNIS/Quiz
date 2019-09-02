@@ -8,8 +8,8 @@ class App extends React.Component {
     super(props)
     this.state = {
       data:[],
-      search: 'trending',
-      amountLoaded:6
+      search: null,
+      amountLoaded:3,
     }
   }
 
@@ -32,7 +32,6 @@ class App extends React.Component {
   }
 
   handleSearchBar = (e) => {
-    //e.target.value
     this.setState({
       search:e.target.value,
       amountLoaded:3
@@ -41,7 +40,7 @@ class App extends React.Component {
 
   handleSearchPress = () => {
 
-    const url = `https://api.giphy.com/v1/gifs/search?api_key=8JI4AsP4zmNZoxx4yGTxqp6Uds5orCYm&q=${this.state.search}&limit=${this.state.amountLoaded}&offset=0&rating=G&lang=en`
+    const url = this.state.search === null ? `http://api.giphy.com/v1/gifs/trending?api_key=8JI4AsP4zmNZoxx4yGTxqp6Uds5orCYm&limit=${this.state.amountLoaded}&rating=G` : `https://api.giphy.com/v1/gifs/search?api_key=8JI4AsP4zmNZoxx4yGTxqp6Uds5orCYm&q=${this.state.search}&limit=${this.state.amountLoaded}&offset=0&rating=G&lang=en`
     fetch(url)
       .then((response)=>{
         if(response.status !== 200){
@@ -65,29 +64,41 @@ class App extends React.Component {
     this.setState({
       amountLoaded:val
     }, this.handleSearchPress)
+  }
 
+  handleCaching = (value,id, obj) => {
+    obj[id] = value
   }
 
   render(){
+      let memo = {}
       let gifs = this.state.data.map((value, index)=>{
+                let id = value.id
+                if(!memo.id){
+                  this.handleCaching(value,id, memo)
                 return (
                   <div>
                       <img src={ value.images.original.url} key={index} className='gif'/>
                   </div>
                   )
+                }
+              return (
+                  <div>
+                      <img src={ memo[id] } key={index} className='gif'/>
+                  </div>
+                )
               })
+
       return (
         <div className="App">
           <h1 className="Title">
             GIPHY SEARCHER
           </h1>
-          <div className='SearchContainer'>
-            <input placeholder="Enter terms" onKeyPress={this.handleSearchBar}/>
-
-            <button onClick={this.handleSearchPress}>
+            <input placeholder="Enter terms" onKeyPress={this.handleSearchBar} className={'Input'}/>
+            <button onClick={this.handleSearchPress} className={'Search'}>
               PRESS ME
             </button>
-          </div>
+
           <div className='gif-container'>
             {
               gifs
@@ -97,8 +108,6 @@ class App extends React.Component {
             <button onClick={this.handleLoadMore} className={'loading-button'}>
               Load More
             </button>
-
-
         </div>
     )
   }

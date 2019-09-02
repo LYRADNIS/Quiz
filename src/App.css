@@ -46,9 +46,21 @@
 }
 
 .loading-button{
-  height:50px;
-  width:100px;
-  padding-bottom:100px
+  height:40px;
+  width:80px;
+
+}
+
+.SearchContainer {
+
+}
+
+.Search {
+  margin-bottom:50px;
+}
+
+.Input{
+  margin-bottom:50px;
 }
 
 
