@@ -11,6 +11,8 @@ class App extends React.Component {
       search: null,
       amountLoaded:3,
     }
+    this.memo = {};
+    this.loadButtonRef = React.createRef()
   }
 
   componentDidMount(){
@@ -39,7 +41,6 @@ class App extends React.Component {
   }
 
   handleSearchPress = () => {
-
     const url = this.state.search === null ? `http://api.giphy.com/v1/gifs/trending?api_key=8JI4AsP4zmNZoxx4yGTxqp6Uds5orCYm&limit=${this.state.amountLoaded}&rating=G` : `https://api.giphy.com/v1/gifs/search?api_key=8JI4AsP4zmNZoxx4yGTxqp6Uds5orCYm&q=${this.state.search}&limit=${this.state.amountLoaded}&offset=0&rating=G&lang=en`
     fetch(url)
       .then((response)=>{
@@ -51,11 +52,14 @@ class App extends React.Component {
           this.setState({
             data:data.data
           })
-        })
+        },this.scrollToMyRef())
 
       }).catch((error)=>{
         console.log('Error', error)
       })
+  }
+  scrollToMyRef = () => {
+    window.scrollTo(0, this.loadButtonRef.current.offsetTop)
   }
 
   handleLoadMore = () => {
@@ -71,11 +75,11 @@ class App extends React.Component {
   }
 
   render(){
-      let memo = {}
+    // increased look up for already seen gifs using memoization
       let gifs = this.state.data.map((value, index)=>{
                 let id = value.id
-                if(!memo.id){
-                  this.handleCaching(value,id, memo)
+                if(!this.memo.id){
+                  this.handleCaching(value,id, this.memo)
                 return (
                   <div>
                       <img src={ value.images.original.url} key={index} className='gif'/>
@@ -84,7 +88,7 @@ class App extends React.Component {
                 }
               return (
                   <div>
-                      <img src={ memo[id] } key={index} className='gif'/>
+                      <img src={ this.memo[id] } key={index} className='gif'/>
                   </div>
                 )
               })
@@ -105,7 +109,7 @@ class App extends React.Component {
             }
           </div>
 
-            <button onClick={this.handleLoadMore} className={'loading-button'}>
+            <button onClick={this.handleLoadMore} className={'loading-button'} ref={this.loadButtonRef} >
               Load More
             </button>
         </div>
